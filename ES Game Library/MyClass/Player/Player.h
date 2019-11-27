@@ -132,5 +132,17 @@ public:
 
 		virtual void Update();
 	};
+	class Jump :public State
+	{
+	private:
+		PlayerStateProcessor* _owner;
+		float time = 0.0f;
+		bool one_trigger = true;
+	public:
+		Jump(PlayerStateProcessor* owner) :_owner(owner){}
+		virtual ~Jump(){}
+
+		virtual void Update();
+	};
 
 };

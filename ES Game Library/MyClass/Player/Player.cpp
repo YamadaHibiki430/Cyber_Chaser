@@ -39,10 +39,15 @@ void Player::Update() {
 	if (player_speed >= -1.f) {
 		player_speed = -1.f;
 	}
+
+	player_position.y -= 3.5f;
 	//ステート更新
 	_stateprocessor.Update();
-
-	player_position = GetAnimePosition();
+	if (player_position.y < 0) {
+		player_position.y = 0;
+	}
+	
+	//player_position = GetAnimePosition();
 }
 
 void Player::Draw3D() {
@@ -50,7 +55,7 @@ void Player::Draw3D() {
 	hitbox->Draw3D();
 	MoveAnimeAdvanceTime(anime_speed);
 	SetAnimeTrack(_anime_track, PLAYERANIMATIONTRACK);
-	/*SetAnimePosition(player_position);*/
+	SetAnimePosition(player_position);
 	SetAnimeRotation(player_rotation);
 	SetAnimeScale(player_scale);
 
@@ -166,22 +171,19 @@ void Player::Idle::Update() {
 		return;
 	}
 
-	if (Input::GetPadInputDown(_owner->player->GetPadID(), 2) && Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Left.x) {
-		_owner->player->_stateprocessor.ChangeState(new Player::LeftStep(&_owner->player->_stateprocessor));
-		return;
-	}
-	if (Input::GetPadInputDown(_owner->player->GetPadID(), 2) && Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Right.x) {
-		_owner->player->_stateprocessor.ChangeState(new Player::RightStep(&_owner->player->_stateprocessor));
-		return;
-	}
-
-
-
-	//if (Input::GetPadandKeybordInputDown(_owner->player->GetPadID(), 1)) {
-	//	
-	//	_owner->player->_stateprocessor.ChangeState(new Player::Sliding(&_owner->player->_stateprocessor));
+	//if (Input::GetPadInputDown(_owner->player->GetPadID(), 2) && Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Left.x) {
+	//	_owner->player->_stateprocessor.ChangeState(new Player::LeftStep(&_owner->player->_stateprocessor));
 	//	return;
 	//}
+	//if (Input::GetPadInputDown(_owner->player->GetPadID(), 2) && Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Right.x) {
+	//	_owner->player->_stateprocessor.ChangeState(new Player::RightStep(&_owner->player->_stateprocessor));
+	//	return;
+	//}
+
+	if (Input::GetPadInputDown(_owner->player->GetPadID(), 0) && _owner->player->player_position.y <= 0) {
+		_owner->player->_stateprocessor.ChangeState(new Player::Jump(&_owner->player->_stateprocessor));
+		return;
+	}
 
 	if (_owner->player->AxisDown() == false) {
 		_owner->player->_stateprocessor.ChangeState(new Player::Move(&_owner->player->_stateprocessor));
@@ -202,16 +204,12 @@ void Player::Move::Update() {
 		_owner->player->_stateprocessor.ChangeState(new Player::Down(&_owner->player->_stateprocessor)); 
 		return;
 	}
-	if (Input::GetPadInputDown(_owner->player->GetPadID(), 2) && Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Left.x) {
-		_owner->player->_stateprocessor.ChangeState(new Player::LeftStep(&_owner->player->_stateprocessor));
-		return;
-	}
-	if (Input::GetPadInputDown(_owner->player->GetPadID(), 2) && Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Right.x) {
-		_owner->player->_stateprocessor.ChangeState(new Player::RightStep(&_owner->player->_stateprocessor));
-		return;
-	}
-	//if (Input::GetPadInputDown(_owner->player->GetPadID(), 1)) {
-	//	_owner->player->_stateprocessor.ChangeState(new Player::Sliding(&_owner->player->_stateprocessor));
+	//if (Input::GetPadInputDown(_owner->player->GetPadID(), 2) && Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Left.x) {
+	//	_owner->player->_stateprocessor.ChangeState(new Player::LeftStep(&_owner->player->_stateprocessor));
+	//	return;
+	//}
+	//if (Input::GetPadInputDown(_owner->player->GetPadID(), 2) && Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Right.x) {
+	//	_owner->player->_stateprocessor.ChangeState(new Player::RightStep(&_owner->player->_stateprocessor));
 	//	return;
 	//}
 	if (_owner->player->AxisDown() == true) {
@@ -219,14 +217,17 @@ void Player::Move::Update() {
 		return;
 	}
 
-
+	if (Input::GetPadInputDown(_owner->player->GetPadID(), 0) && _owner->player->player_position.y <=0) {
+		_owner->player->_stateprocessor.ChangeState(new Player::Jump(&_owner->player->_stateprocessor));
+		return;
+	}
 
 	if (Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Left.x) {
-		_owner->player->SetAnimeMove(Vector3(_owner->player->player_speed, 0.f, 0.f));
+		_owner->player->player_position.x -= _owner->player->player_speed;
 	}
 
 	if (Input::GetStickandArrowkeyVector(_owner->player->GetPadID()).x == Vector3_Right.x) {
-		_owner->player->SetAnimeMove(Vector3(-_owner->player->player_speed, 0.f, 0.f));
+		_owner->player->player_position.x += _owner->player->player_speed;
 	}
 
 	_owner->player->anime_speed = 0.08f;
@@ -379,4 +380,31 @@ void Player::RightStep::Update() {
 	_owner->player->SetAnimeTrack(0, PLAYERANIMATIONTRACK);
 	time += 1.f;
 	_owner->player->SetAnimeMove(Vector3(-_owner->player->player_speed * 1.2, 0.f, 0.f));
+}
+
+void Player::Jump::Update() {
+
+	if (time >= 10) {
+		if (_owner->player->AxisDown() == false) {
+			_owner->player->hitbox->Settags("player");
+			time = 0.f;
+			_owner->player->hitbox->SetColor(Vector3(1.f, 0.f, 0.f));
+			_owner->player->_stateprocessor.ChangeState(new Player::Move(&_owner->player->_stateprocessor));
+			return;
+		}
+		if (_owner->player->AxisDown() == true) {
+			time = 0.f;
+			_owner->player->hitbox->Settags("player");
+			_owner->player->hitbox->SetColor(Vector3(1.f, 0.f, 0.f));
+			_owner->player->_stateprocessor.ChangeState(new Player::Idle(&_owner->player->_stateprocessor));
+
+			return;
+		}
+	}
+
+
+	_owner->player->anime_speed = 0.016f;
+	time += 1.f;
+	//_owner->player->SetAnimeTrack(1, PLAYERANIMATIONTRACK);
+	_owner->player->player_position.y += 5.f;
 }
