@@ -93,15 +93,15 @@ public:
 
 };
 
-class RoadLeftTurn :public Road {
+class RoadWall :public Road {
 private:
-
+	float time;
 protected:
 	Vector3 position;
 	Vector3 rotation;
 public:
-	RoadLeftTurn();
-	~RoadLeftTurn();
+	RoadWall();
+	~RoadWall();
 
 	void Update();
 	void Draw3D();

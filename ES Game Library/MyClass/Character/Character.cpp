@@ -19,6 +19,18 @@ void Character::SetAnimeModel(LPCTSTR file_name) {
 	}
 	_animemodel = loaded_anime[GetType()];
 }
+/*!
+@fn     モデルセット関数
+@brief  _modelに指定されたloaded_modelをセットする
+@param  file_name セットするモデルの名前
+@return なし
+*/
+void Character::SetModel(LPCTSTR file_name) {
+	if (loaded_model[GetType()] == NULL) {
+		loaded_model[GetType()] = GraphicsDevice.CreateModelFromFile(file_name);
+	}
+	_model = loaded_model[GetType()];
+}
 void Character::SetSimpleModel(float width, float height, float depth) {
 	//パラメータ設定
 	_width = width;

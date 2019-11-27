@@ -38,7 +38,6 @@ public:
 	void SetAnimeMove(Vector3 character_vector);
 	void SetAnimePosition(Vector3 character_pos);
 	void SetAnimeRotation(Vector3 character_rot);
-	void SetSimpleRotation(Vector3 _rot);
 	void SetAnimeScale(float character_scale);
 	void SetAnimeTrack(int track, int max_track);
 	void SetAnimeAdvanceTime(float time);
@@ -47,11 +46,12 @@ public:
 	void MoveAnimeAdvanceTime(float time);
 
 
-
+	void SetModel(LPCTSTR file_name);
 	void SetSimpleModel(float width, float height, float depth);
 	void SetSimpleColor(Vector3 _color);
 	void SetSimplePosition(Vector3 _pos);
 	void SetSimpleScale(float _scale);
+	void SetSimpleRotation(Vector3 _rot);
 
 	bool IsRemove() { return remove_flag; }
 	Vector3 GetAnimePosition();

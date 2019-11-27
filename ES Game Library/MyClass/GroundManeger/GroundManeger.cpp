@@ -77,7 +77,7 @@ void Road::Draw3D() {
 //------------------------------------------------------
 
 RoadStraight::RoadStraight() {
-	SetModel(_T("Model/douro/miti_03.X"));
+	SetModel(_T("Model/douro/road_v01.X"));
 	rotation = Vector3(0.0f, 0.0f, 0.0f);
 	position = Vector3(0.0f, 0.0f, -2000.0f);
 	time = 0;
@@ -132,18 +132,21 @@ void RoadBack::Draw3D() {
 
 //----------------------------------------------------
 
-RoadLeftTurn::RoadLeftTurn() {
-	SetModel(_T(""));
+RoadWall::RoadWall() {
+	SetModel(_T("Model/Back/bigbox_v02.X"));
+	rotation = Vector3(0.0f, 0.0f, 0.0f);
+	position = Vector3(0.0f, 0.0f, -1000.0f);
+	time = 0;
 }
 
-RoadLeftTurn::~RoadLeftTurn() {
+RoadWall::~RoadWall() {
 
 }
 
-void RoadLeftTurn::Update() {
+void RoadWall::Update() {
 
 }
 
-void RoadLeftTurn::Draw3D() {
+void RoadWall::Draw3D() {
 
 }

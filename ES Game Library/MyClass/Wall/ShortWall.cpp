@@ -1,20 +1,19 @@
 #include "ShortWall.h"
 
 ShortWall::ShortWall() {
-	SetSimpleColor(Vector3(0.0f, 1.0f, 0.0f));
-	SetSimpleModel(1.f, 1.f, 1.f);
+	SetModel(_T("Model/douro/kari_bluebox.X"));
 
 	hitbox = new HitBox;
 	hitbox->Init();
 	hitbox->Settags("enemy");
-	hitbox->SetHitBoxScale(5.f);
+	hitbox->SetHitBoxScale(10.f);
 
-	_scale = 6.f;
+	_scale = 1.f;
 
 	int ram = MathHelper_Random(-2, 4);
 
 	_rotation = Vector3(0.0f, 0.0f, 0.0f);
-	_position = Vector3(10.f * ram, 10.0f, -1000.0f);
+	_position = Vector3(10.f * ram, 0.0f, -1000.0f);
 	time = 0;
 }
 
@@ -32,7 +31,7 @@ void ShortWall::Update() {
 }
 
 void ShortWall::Draw3D() {
-	hitbox->SetHitBoxPosition(_position + Vector3(0.f, 0.f, 0.f));
+	hitbox->SetHitBoxPosition(_position + Vector3(0.f, 5.f, 0.f));
 	hitbox->Draw3D();
 	SetSimplePosition(_position);
 	SetSimpleRotation(_rotation);
