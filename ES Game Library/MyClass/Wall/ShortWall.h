@@ -15,6 +15,7 @@ public:
 	~ShortWall();
 	void Update();
 	void Draw3D();
+	void DrawAlph();
 
 	CHARACTER_TYPE GetType() { return SHORT_WALL_TYPE; }
 

@@ -10,6 +10,7 @@ enum CHARACTER_TYPE {
 	BULLET_ENEMY_TYPE,
 	SHORT_WALL_TYPE,
 	LONG_WALL_TYPE,
+	WIDTH_WALL_TYPE,
 	CHARA_NUM_TYPE
 };
 
@@ -32,6 +33,7 @@ public:
 	Character();
 	virtual void Update() = 0;
 	virtual void Draw3D();
+	virtual void DrawAlph() = 0;
 
 	virtual CHARACTER_TYPE GetType() = 0;//自分自身のキャラクタータイプを返す
 	void SetAnimeModel(LPCTSTR file_name);

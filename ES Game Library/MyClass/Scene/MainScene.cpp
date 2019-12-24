@@ -7,6 +7,9 @@ void MainScene::Initialize() {
 	camera.Init();
 	goaltime.Initialize();
 	init_time = 0.f;
+	SNDMANAGER.Initialize();
+	SNDMANAGER.PlayBGM();
+
 }
 void MainScene::Update() {
 	
@@ -14,17 +17,19 @@ void MainScene::Update() {
 
 	goaltime.Update();
 
-	if (goaltime.GetMyTime() > 70.f) {
-		goaltime.IsGoal();
-	}
 
-	if (MathHelper_Random(0, 100) <= 10) {
+
+	if (MathHelper_Random(0, 200) <= 10) {
 		Character_Ref shortwall(new ShortWall());
 		AddList(shortwall);
 	}
-	if (MathHelper_Random(0, 100) <= 0) {
+	if (MathHelper_Random(0, 200) <= 0) {
 		Character_Ref longwall(new LongWall());
 		AddList(longwall);
+	}
+	if (MathHelper_Random(0, 200) <= 0) {
+		Character_Ref widthwall(new WidthWall());
+		AddList(widthwall);
 	}
 	
 
@@ -32,14 +37,6 @@ void MainScene::Update() {
 	std::for_each(Character_List.begin(), Character_List.end(), [](Character_Ref& chara) {chara->Update(); });
 	player.Update();
 	
-	if (player.GetIsJust() == true) {
-		goaltime.AddMoveTime();
-	}
-
-	if (player.GetIsDamage() == true) {
-		goaltime.LowerMoveTime();
-	}
-
 	camera.SetLockAtPosCamera(player.GetAnimePosition(),player.GetPadID());
 	player.SetCameraVector(camera.GetCameraVector());
 
@@ -50,6 +47,14 @@ void MainScene::Update() {
 	Character_List.erase(end, Character_List.end());
 
 	init_time += 1.f;
+	if (goaltime.GetMyTime() > 60.f) {
+		SceneManager::ChangeScene(SceneManager::RESULT);
+		
+		
+	}else if (player.GetDamageCount() >= 10) {
+		SceneManager::ChangeScene(SceneManager::GAMEOVER);
+	}
+
 }
 void MainScene::Draw3D() {
 	groundmaneger.Draw3D();
@@ -63,6 +68,9 @@ void MainScene::Draw2D() {
 	SpriteBatch.Draw(*background, Vector3(0.f, 0.f, 10000.f));
 }
 void MainScene::DrawAlpha3D() {
+	GraphicsDevice.BeginAlphaBlend();
+	std::for_each(Character_List.begin(), Character_List.end(), [](Character_Ref& chara) {chara->DrawAlph(); });
+	GraphicsDevice.EndAlphaBlend();
 }
 void MainScene::AddList(Character_Ref& chara) {
 	Character_List.push_back(chara);

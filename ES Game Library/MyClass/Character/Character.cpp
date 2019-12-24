@@ -30,6 +30,9 @@ void Character::SetModel(LPCTSTR file_name) {
 		loaded_model[GetType()] = GraphicsDevice.CreateModelFromFile(file_name);
 	}
 	_model = loaded_model[GetType()];
+	Material mtrl2(_model);
+	mtrl2.Emissive = Color(1.06f, 1.06f, 1.06f);
+	_model->SetMaterial(mtrl2);
 }
 void Character::SetSimpleModel(float width, float height, float depth) {
 	//ƒpƒ‰ƒ[ƒ^İ’è

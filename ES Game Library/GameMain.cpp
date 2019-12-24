@@ -26,7 +26,7 @@ bool GameMain::Initialize()
 	//キーボード初期化
 	Input::Init();
 	//タイトルシーンを生成
-	SceneManager::ChangeScene(SceneManager::MAIN);
+	SceneManager::ChangeScene(SceneManager::TITLE);
 	
 
 	return true;
@@ -71,7 +71,7 @@ void GameMain::Draw()
 
 	sceneManager.Draw3D();
 	
-	
+	sceneManager.DrawAlpha3D();
 	SpriteBatch.Begin();
 	sceneManager.Draw2D();
 

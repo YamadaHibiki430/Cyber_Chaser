@@ -8,6 +8,10 @@
 #include "../GoalTime/GoalTime.h"
 #include "../Wall/LongWall.h"
 #include "../Wall/ShortWall.h"
+#include "../Wall/WidthWall.h"
+#include "../SEManeger/SoundManager.h"
+#include "SceneManager.h"
+
 
 class MainScene:public BaseScene{
 public:
@@ -24,7 +28,7 @@ private:
 	GroundManeger groundmaneger;
 	Player player;
 	//Ground grou;
-	GoalTime goaltime;
+	TimeManeger goaltime;
 	CameraManejar camera;
 	Vector3 player_pos;
 	SPRITE background;

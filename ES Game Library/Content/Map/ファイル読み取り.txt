@@ -1,0 +1,51 @@
+/*
+ * @fn         コンフィグ取得関数
+ * @brief      テキストからコンフィグをインポートする
+ * @param[out] std::vector< std::vector<int*>> > 格納する変数
+ * @return     なし
+*/
+void InputConfig(std::vector< std::vector<int> >& config_deta) {
+
+	FILE* file;
+	file = fopen("Config/config.csv", "r");
+
+	char str[512];
+	char* s;
+	int mozi_count = 0;
+
+	do {
+		mozi_count = 0;
+		std::vector<int> data;
+		s = fgets(str, 512, file);
+
+		for (int i = 0; ; i++) {
+
+			if (i == 0) {
+
+				//初回
+				//tp =_tcstok_s(buffer, TEXT(","), &next);
+				s = strtok(str, ",");
+
+
+			}
+			else {
+				//２回目以降
+				//tp = _tcstok_s(NULL, TEXT(","), &next);
+				s = strtok(NULL, ",");
+			}
+
+			//取り出し終了
+			if (s == NULL)
+				break;
+
+			//(tpをどこかに格納する処理)
+			data.push_back(atoi(s));
+			mozi_count++;
+		}
+
+		config_deta.push_back(data);
+	} while (mozi_count != 1);
+	fclose(file);
+
+
+}

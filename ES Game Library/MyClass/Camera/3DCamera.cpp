@@ -78,16 +78,74 @@ Vector3 CameraManejar::GetCameraVector() {
 	return result;
 }
 
+Vector3 CameraManejar::Vector3_Lerp(Vector3 A, Vector3 B, float t) {
+
+	Vector3 Lerp = Vector3_Zero;
+
+	Lerp.x = MathHelper_Lerp(A.x, B.x, t);
+	Lerp.y = MathHelper_Lerp(A.y, B.y, t);
+	Lerp.z = MathHelper_Lerp(A.z, B.z, t);
+
+	return Lerp;
+}
+
 void CameraManejar::SetLockAtPosCamera(Vector3 atpos,int id) {
-	//if (Input::GetRightStickVector(id) == Vector3_Right) {
-	//	targetrote.y += 1.f;
-	//}
-	//if (Input::GetRightStickVector(id) == Vector3_Left) {
-	//	targetrote.y -= 1.f;
-	//}
+	if (Input::GetRightStickVector(id) == Vector3_Right) {
+		rote_powoer += 0.05f;
+	}
+	if (Input::GetRightStickVector(id) == Vector3_Left) {
+		rote_powoer -= 0.05f;
+	}
 	targetpos = atpos + Vector3(0.0f, 10.0f, -10.0f);
 	
-	camera->SetLookAt(target->GetPosition() + Vector3(0.0f, 20.0f, 30.0f) + target->GetFrontVector() * 20, target->GetPosition(), Vector3_Up);
+	if (camera_state == 0) {
+		if (Input::GetPadInputDown(id, 5)) {
+			camera_state = 1;
+		}
+		if (Input::GetPadInputDown(id, 4)) {
+			camera_state = 4;
+		}
+		camera->SetLookAt(Vector3_Lerp(camera->GetPosition(), target->GetPosition() + Vector3(0.0f, 20.0f, 30.0f) + target->GetFrontVector() * 20, 0.5f), target->GetPosition(), Vector3_Up);
+	}
+	else if (camera_state == 1) {
+		if (Input::GetPadInputDown(id, 5)) {
+			camera_state = 2;
+		}
+		if (Input::GetPadInputDown(id, 4)) {
+			camera_state = 0;
+		}
+		camera->SetLookAt(Vector3_Lerp(camera->GetPosition(), target->GetPosition() + Vector3(10.0f, 20.0f, 30.0f) + target->GetFrontVector() * 20, 0.5f), target->GetPosition(), Vector3_Up);
+	}
+	else if (camera_state == 2) {
+		if (Input::GetPadInputDown(id, 5)) {
+			camera_state = 3;
+		}
+		if (Input::GetPadInputDown(id, 4)) {
+			camera_state = 1;
+		}
+		camera->SetLookAt(Vector3_Lerp(camera->GetPosition(), target->GetPosition() + Vector3(-10.0f, 20.0f, 30.0f) + target->GetFrontVector() * 20,0.5f), target->GetPosition(), Vector3_Up);
+	}
+	else if (camera_state == 3) {
+		if (Input::GetPadInputDown(id, 5)) {
+			camera_state = 4;
+		}
+		if (Input::GetPadInputDown(id, 4)) {
+			camera_state = 2;
+		}
+		camera->SetLookAt(Vector3_Lerp(camera->GetPosition(), Vector3(20.f * cos(rote_powoer) + targetpos.x, targetpos.y, 20.f * sin(rote_powoer) + targetpos.z), 0.05f), target->GetPosition(), Vector3_Up);
+	}
+	else if (camera_state == 4) {
+		if (Input::GetPadInputDown(id, 5)) {
+			camera_state = 0;
+		}
+		if (Input::GetPadInputDown(id, 4)) {
+			camera_state = 3;
+		}
+		camera->SetLookAt(Vector3_Lerp(camera->GetPosition(), Vector3(50.f * cos(rote_powoer) + targetpos.x, targetpos.y + 15.f, 50.f * sin(rote_powoer) + targetpos.z),0.05f) , target->GetPosition(), Vector3_Up);
+	}
+	
+
+
 	//camera->SetRotation(camera->GetRotation().x +20.f, camera->GetRotation().y+25.f, camera->GetRotation().z+25.f);
 	GraphicsDevice.SetCamera(camera);
 }
