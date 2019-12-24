@@ -20,13 +20,16 @@ private:
 	std::vector<Road_Ref> road_list;
 	void AddList(Road_Ref& road);
 
+	int create_count;
 	float time;
+	float back_time;
 public:
 	GroundManeger() {};
 	~GroundManeger() {};
 	void Initialize();
 	void Update();
 	void Draw3D();
+	int GetCreate_Count() { return create_count; }
 };
 
 
@@ -45,7 +48,6 @@ public:
 	void SetRotation(Vector3 road_rot);
 	void SetScale(float road_scale);
 	void SetSpeed(float _speed);
-	void RoadMove();
 
 	bool IsRemove() { return remove_flag; }
 
@@ -59,6 +61,7 @@ protected:
 class RoadStraight :public Road {
 private:
 	float time;
+	
 protected:
 	Vector3 position;
 	Vector3 rotation;
@@ -93,15 +96,15 @@ public:
 
 };
 
-class RoadLeftTurn :public Road {
+class RoadWall :public Road {
 private:
-
+	float time;
 protected:
 	Vector3 position;
 	Vector3 rotation;
 public:
-	RoadLeftTurn();
-	~RoadLeftTurn();
+	RoadWall();
+	~RoadWall();
 
 	void Update();
 	void Draw3D();

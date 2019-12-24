@@ -9,14 +9,24 @@ void GroundManeger::Initialize() {
 
 
 	time = 0.0f;
+	back_time = 0.f;
+	//“¹˜H¶¬”
+	create_count = 0;
 }
 
 void GroundManeger::Update() {
 	time += 1.0f;
-	if (time >= 20.f) {
+	back_time += 0.5f;
+	if (time >= 22.5f) {
 		Road_Ref straight(new RoadStraight());
 		AddList(straight);
 		time = 0;
+		create_count += 1;
+	}
+	if (back_time >= 75.f) {
+		Road_Ref back(new RoadBack());
+		AddList(back);
+		back_time = 0;
 	}
 
 	std::for_each(road_list.begin(), road_list.end(), [](Road_Ref& road) {road->Update(); });
@@ -52,6 +62,9 @@ void Road::SetModel(LPCTSTR file_name) {
 		loaded_model[GetType()] = GraphicsDevice.CreateModelFromFile(file_name);
 	}
 	_model = loaded_model[GetType()];
+	Material mtrl2(_model);
+	mtrl2.Emissive = Color(1.06f, 1.06f, 1.06f);
+	_model->SetMaterial(mtrl2);
 }
 
 void Road::SetPosition(Vector3 road_pos) {
@@ -77,9 +90,10 @@ void Road::Draw3D() {
 //------------------------------------------------------
 
 RoadStraight::RoadStraight() {
-	SetModel(_T("Model/douro/miti_03.X"));
+	SetModel(_T("Model/Ground/ground.x"));
 	rotation = Vector3(0.0f, 0.0f, 0.0f);
 	position = Vector3(0.0f, 0.0f, -2000.0f);
+	SetScale(2.f);
 	time = 0;
 }
 
@@ -90,7 +104,7 @@ RoadStraight::~RoadStraight() {
 void RoadStraight::Update() {
 	position += _model->GetFrontVector() * 10.0f ;
 	time += 1.f;
-	if (time >= 200.f) {
+	if (time >= 250.f) {
 		remove();
 		time = 0;
 	}
@@ -107,7 +121,7 @@ void RoadStraight::Draw3D() {
 RoadBack::RoadBack() {
 	SetModel(_T("Model/Back/bigbox_v02.X"));
 	rotation = Vector3(0.0f, 0.0f, 0.0f);
-	position = Vector3(0.0f, 0.0f, -1000.0f);
+	position = Vector3(0.0f, 0.0f, -6000.0f);
 	time = 0;
 }
 
@@ -116,12 +130,12 @@ RoadBack::~RoadBack() {
 }
 
 void RoadBack::Update() {
-	//position += _model->GetFrontVector() * 10.0f;
-	//time += 1.f;
-	//if (time >= 100.f) {
-	//	remove();
-	//	time = 0;
-	//}
+	position += _model->GetFrontVector() * 20.0f;
+	time += 0.01f;
+	if (time >= 400.f) {
+		remove();
+		time = 0;
+	}
 }
 
 void RoadBack::Draw3D() {
@@ -132,18 +146,21 @@ void RoadBack::Draw3D() {
 
 //----------------------------------------------------
 
-RoadLeftTurn::RoadLeftTurn() {
-	SetModel(_T(""));
+RoadWall::RoadWall() {
+	SetModel(_T("Model/Back/bigbox_v02.X"));
+	rotation = Vector3(0.0f, 0.0f, 0.0f);
+	position = Vector3(0.0f, 0.0f, -1000.0f);
+	time = 0;
 }
 
-RoadLeftTurn::~RoadLeftTurn() {
+RoadWall::~RoadWall() {
 
 }
 
-void RoadLeftTurn::Update() {
+void RoadWall::Update() {
 
 }
 
-void RoadLeftTurn::Draw3D() {
+void RoadWall::Draw3D() {
 
 }

@@ -1,20 +1,19 @@
 #include"LongWall.h"
 
 LongWall::LongWall() {
-	SetSimpleColor(Vector3(0.0f, 1.0f, 0.0f));
-	SetSimpleModel(5.f, 20.f, 5.f);
+	SetModel(_T("Model/Ground/Portait.X"));
 
 	hitbox = new HitBox;
 	hitbox->Init();
 	hitbox->Settags("enemy");
-	hitbox->SetHitBoxScale(5.f);
+	hitbox->SetHitBoxScale(15.f);
 
-	_scale = 5.f;
+	_scale = 1.5f;
 
-	int ram = MathHelper_Random(-2, 4);
+	int ram = MathHelper_Random(-2, 5);
 
 	_rotation = Vector3(0.0f, 0.0f, 0.0f);
-	_position = Vector3(10.f * ram, 10.0f, -1000.0f);
+	_position = Vector3(10.f * ram, 0.0f, -1000.0f);
 	time = 0;
 }
 
@@ -32,11 +31,16 @@ void LongWall::Update() {
 }
 
 void LongWall::Draw3D() {
-	hitbox->SetHitBoxPosition(_position + Vector3(0.f, 0.f, 0.f));
+
+}
+
+void LongWall::DrawAlph() {
+	hitbox->SetHitBoxPosition(_position + Vector3(-30.f, 10.f, 50.f));
 	hitbox->Draw3D();
 	SetSimplePosition(_position);
 	SetSimpleRotation(_rotation);
 	SetSimpleScale(_scale);
 
-	_model->Draw();
+	_model->DrawAlpha(1.0f);
+
 }

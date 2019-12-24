@@ -28,7 +28,9 @@ protected:
 	float player_speed;
 	bool is_just = false;
 	bool is_damage = false;
+	int damage_count = 0;
 	int justmovecount;
+	bool damage_efect = false;
 	bool IsHitObjects(std::string tags);
 	void IsHitObjectsRemove(std::string tags);
 
@@ -38,6 +40,7 @@ public:
 	void Update();
 	void Draw3D();
 	void Draw2D();
+ 	void DrawAlph(){}
 	void SetPadID(int pad_id);
 
 	bool AxisDown();
@@ -51,7 +54,7 @@ public:
 	bool GetIsJust() { return is_just; }
 	bool GetIsDamage() { return is_damage; }
 	void SetTarget(Vector3 _target) {}
-
+	int GetDamageCount() { return damage_count; }
 	Vector3 GetPlayerPosition() { return player_position; }
 
 	//-----STATE---------------
@@ -74,6 +77,7 @@ public:
 	{
 	private:
 		PlayerStateProcessor* _owner;
+
 	public:
 	    Move(PlayerStateProcessor* owner) : _owner(owner) {}
 		virtual ~Move() {}
@@ -137,6 +141,7 @@ public:
 	private:
 		PlayerStateProcessor* _owner;
 		float time = 0.0f;
+		float jump_power = 0.f;
 		bool one_trigger = true;
 	public:
 		Jump(PlayerStateProcessor* owner) :_owner(owner){}
@@ -144,5 +149,41 @@ public:
 
 		virtual void Update();
 	};
+	class RightMove :public State
+	{
+	private:
+		PlayerStateProcessor* _owner;
 
+	public:
+		RightMove(PlayerStateProcessor* owner) :_owner(owner) {}
+		virtual ~RightMove(){}
+
+		virtual void Update();
+
+	};
+	class LeftMove :public State
+	{
+	private:
+		PlayerStateProcessor* _owner;
+
+	public:
+		LeftMove(PlayerStateProcessor* owner) :_owner(owner) {}
+		virtual ~LeftMove() {}
+
+		virtual void Update();
+
+	};
+	class JumpLong :public State
+	{
+	private:
+		PlayerStateProcessor* _owner;
+		float time = 0.0f;
+		float jump_power = 0.f;
+		bool one_trigger = true;
+	public:
+		JumpLong(PlayerStateProcessor* owner) :_owner(owner) {}
+		virtual ~JumpLong() {}
+
+		virtual void Update();
+	};
 };

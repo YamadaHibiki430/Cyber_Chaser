@@ -15,15 +15,20 @@ void SceneManager::ChangeScene(SCENE scene) {
 	int i = 0;
 	switch (scene) {          
 	case SCENE::TITLE:
-		m_pScene = new TitleScene();      
+		m_pScene = new TitleScene(); 
+		break;
 	case SCENE::MAIN:
 		m_pScene = new MainScene();      
 		break;
 	case SCENE::RESULT:
 		m_pScene = new ResultScene();     
 		break;
+	case SCENE::GAMEOVER:
+		m_pScene = new GameOver();
+		break;
 	}
 	m_pScene->Initialize();
+	int a = 1;
 }
 /*
 *@fn 現在のシーンの更新関数

@@ -27,6 +27,7 @@ public:
 	~Enemy();
 	void Update();
 	void Draw3D();
+	void DrawAlph() {}
 	void EnemyRemove();
 
 

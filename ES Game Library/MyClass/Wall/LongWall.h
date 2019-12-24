@@ -15,6 +15,7 @@ public:
 	~LongWall();
 	void Update();
 	void Draw3D();
+	void DrawAlph();
 
 	CHARACTER_TYPE GetType() { return LONG_WALL_TYPE; }
 

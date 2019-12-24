@@ -1,18 +1,11 @@
 #pragma once
 #include "../../ESGLib.h"
 
-class GoalTime {
+class TimeManeger {
 private:
-
-
-	float movetime = 1.f;
-
 	int in = 0;
 	int h = 0, m = 0, s = 0;
 	FONT def;
-
-	bool is_move = true;
-	bool is_goal = false;
 
 	int sc =0;
 
@@ -23,11 +16,8 @@ public:
 	void Draw2D();
 
 	void TimeSecond();
-	void AddMoveTime();
-	void LowerMoveTime();
 
 	float GetMyTime();
 
-	bool IsGoal();
 
 };

@@ -3,6 +3,7 @@
 #include "../Player/Player.h"
 #include "../Enemy/Enemy.h"
 
+
 class BaseScene {
 public:
 	virtual void Initialize() = 0;

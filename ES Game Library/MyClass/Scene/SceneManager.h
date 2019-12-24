@@ -5,6 +5,7 @@
 #include"MainScene.h"
 #include"TitleScene.h"
 #include"ResultScene.h"
+#include"GameOver.h"
 
 /*
 *シーン管理クラス
@@ -14,6 +15,7 @@ public:
 	enum SCENE {
 		TITLE,
 		MAIN,
+		GAMEOVER,
 		RESULT
 	};
 	static void ChangeScene(SCENE scene);//シーンを引数によって変える関数

@@ -23,6 +23,7 @@ public:
 
 	void Update();
 	void Draw3D();
+	void DrawAlph() {}
 	void EnemyRemove() {};
 	void Shot();
 
